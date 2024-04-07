@@ -18,6 +18,12 @@ namespace TestTask
         public MainForm()
         {
             InitializeComponent();
+
+            dm.CreatePersonalTable();
+            dm.CreateEducationTable();
+            dm.CreateDivisionTable();
+            dm.CreateRaisingTable();
+
             foreach (string[] s in dm.Load()) dataGridView1.Rows.Add(s);
         }
 
@@ -26,7 +32,6 @@ namespace TestTask
             AddingForm addingForm = new AddingForm();
             addingForm.Show();
         }
-
         private void Form1_Activated(object sender, EventArgs e)
         {
             if (DataManager.on == true)
@@ -76,6 +81,17 @@ namespace TestTask
             worksheet.AllocatedRange.AutoFitColumns();
             workbook.SaveToFile("Список на повышение.xlsx", ExcelVersion.Version2016);
             MessageBox.Show("Отчет создан", "Успешно", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+            for (int i = 0; i < dataGridView1.RowCount - 1; i++)
+            {
+                if (!dataGridView1.Rows[i].Cells[1].Value.ToString().ToLower().Contains(textBox1.Text))
+                    dataGridView1.Rows[i].Visible = false;
+                else
+                    dataGridView1.Rows[i].Visible = true;
+            }
         }
     }
 }

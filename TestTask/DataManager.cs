@@ -43,6 +43,124 @@ namespace TestTask
             return false;
         }
 
+        public void CreatePersonalTable()
+        {
+            string query = @"IF OBJECT_ID('dbo.Personal', 'U') IS NULL
+                             CREATE TABLE Personal (  
+                                id INT NOT NULL PRIMARY KEY IDENTITY,  
+                                name VARCHAR(20) NOT NULL, 
+                                secondName VARCHAR(30),
+                                lastName VARCHAR(30),
+                                tableNum VARCHAR(10),
+                                sex VARCHAR(1) NOT NULL, 
+                                birthday DATE NOT NULL,
+                                division VARCHAR(20) NOT NULL,
+                                education VARCHAR(20) NOT NULL, 
+                                contractDate DATE NOT NULL, 
+                                contractCloseDate DATE);";
+            try
+            {
+                OpenConnect();
+                SqlCommand command = new SqlCommand(query, sqlConnection);
+                command.ExecuteNonQuery();
+            }
+            catch (System.Exception ex)
+            {
+                MessageBox.Show(ex.ToString(), "CreatePersonalTable", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                if (sqlConnection.State == ConnectionState.Open)
+                {
+                    CloseConnect();
+                }
+            }
+        }
+        public void CreateEducationTable()
+        {
+            string query = @"IF OBJECT_ID('dbo.Education', 'U') IS NULL
+                             BEGIN
+                             CREATE TABLE Education (  
+                                id INT NOT NULL PRIMARY KEY IDENTITY,  
+                                educateName VARCHAR(20) NOT NULL);
+                            INSERT INTO Education(educateName) VALUES ('Высшее')
+                            INSERT INTO Education(educateName) VALUES ('Среднее')
+                            INSERT INTO Education(educateName) VALUES ('Средне-специальное')
+                            END";
+            try
+            {
+                OpenConnect();
+                SqlCommand command = new SqlCommand(query, sqlConnection);
+                command.ExecuteNonQuery();
+            }
+            catch (System.Exception ex)
+            {
+                MessageBox.Show(ex.ToString(), "CreateEducationTable", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                if (sqlConnection.State == ConnectionState.Open)
+                {
+                    CloseConnect();
+                }
+            }
+        }
+        public void CreateDivisionTable()
+        {
+            string query = @"IF OBJECT_ID('dbo.Divisions', 'U') IS NULL
+                             BEGIN
+                             CREATE TABLE Divisions (  
+                                id INT NOT NULL PRIMARY KEY IDENTITY,  
+                                division VARCHAR(20) NOT NULL)
+                            INSERT INTO Divisions(division) VALUES ('ОГК')
+                            INSERT INTO Divisions(division) VALUES ('ОГТ')
+                            INSERT INTO Divisions(division) VALUES ('ИС')
+                            INSERT INTO Divisions(division) VALUES ('ОГМех')
+                            END";
+            try
+            {
+                OpenConnect();
+                SqlCommand command = new SqlCommand(query, sqlConnection);
+                command.ExecuteNonQuery();
+            }
+            catch (System.Exception ex)
+            {
+                MessageBox.Show(ex.ToString(), "CreateDivisionTable", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                if (sqlConnection.State == ConnectionState.Open)
+                {
+                    CloseConnect();
+                }
+            }
+        }
+        public void CreateRaisingTable()
+        {
+            string query = @"IF OBJECT_ID('dbo.RaisingPersonal', 'U') IS NULL
+                             CREATE TABLE RaisingPersonal (  
+                                id INT NOT NULL PRIMARY KEY IDENTITY,  
+                                idPerson INT NOT NULL,
+                                persent INT NOT NULL)";
+            try
+            {
+                OpenConnect();
+                SqlCommand command = new SqlCommand(query, sqlConnection);
+                command.ExecuteNonQuery();
+            }
+            catch (System.Exception ex)
+            {
+                MessageBox.Show(ex.ToString(), "CreateRaisingTable", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                if (sqlConnection.State == ConnectionState.Open)
+                {
+                    CloseConnect();
+                }
+            }
+        }
+
         public bool AddPerson(Person person)
         {
             string sql = $"INSERT INTO Personal (name, secondName, lastName, tableNum, sex, birthday, division, education, contractDate) " +
