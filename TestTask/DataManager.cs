@@ -33,7 +33,8 @@ namespace TestTask
          {
             try
             {
-                sqlConnection = new SqlConnection(@"Data Source=DESKTOP-5L65RAI;Initial Catalog=TestTask;Integrated Security=True");
+                //строка добавления базы данных
+                sqlConnection = new SqlConnection(@"Data Source=/*сервер*/;Initial Catalog=TestTask;Integrated Security=True");
             }
             catch (System.Exception ex)
             {
