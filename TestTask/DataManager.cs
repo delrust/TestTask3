@@ -26,8 +26,20 @@ namespace TestTask
 {
     class DataManager
     {
-        public SqlConnection sqlConnection = new SqlConnection(@"Data Source=DESKTOP-5L65RAI;Initial Catalog=TestTask;Integrated Security=True");
+        public SqlConnection sqlConnection;
         static public bool on = false; 
+
+         public DataManager()
+         {
+            try
+            {
+                sqlConnection = new SqlConnection(@"Data Source=DESKTOP-5L65RAI;Initial Catalog=TestTask;Integrated Security=True");
+            }
+            catch (System.Exception ex)
+            {
+                MessageBox.Show(ex.ToString(), "CreatePersonalTable", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
         public bool OpenConnect()
         {
             if (sqlConnection.State == System.Data.ConnectionState.Closed)
@@ -268,6 +280,13 @@ namespace TestTask
                 MessageBox.Show("Ошибка", "Ошибка LoadPerson", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return null;
             }
+            finally
+            {
+                if (sqlConnection.State == ConnectionState.Open)
+                {
+                    CloseConnect();
+                }
+            }
         }
         public List<string> LoadDivision()
         {
@@ -375,11 +394,199 @@ namespace TestTask
             }
         }
 
-        public void LoadNoRaising()
+        public List<Person> LoadReisingForEdit()
         {
-            string query = "SELECT Personal.name, Personal.secondName, Personal.lastName " +
-                           "FROM Personal LEFT JOIN RaisingPersonal ON RaisingPersonal.idPerson = Personal.id " +
-                           "WHERE RaisingPersonal.idPerson IS NULL";
+            string query = "SELECT Personal.name, Personal.secondName, Personal.lastName, RaisingPersonal.persent " +
+                           "FROM RaisingPersonal, Personal " +
+                           "WHERE RaisingPersonal.idPerson = Personal.id";
+            try
+            {
+                OpenConnect();
+                SqlCommand command = new SqlCommand(query, sqlConnection);
+                SqlDataReader reader = command.ExecuteReader();
+                List<Person> person = new List<Person>();
+                while (reader.Read())
+                {
+                    Person p = new Person(reader[0].ToString().Trim(), reader[1].ToString().Trim(), reader[2].ToString().Trim(), Int32.Parse(reader[3].ToString()));
+                    person.Add(p);
+                }
+                reader.Close();
+                CloseConnect();
+                return person;
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.ToString(), "Ошибка LoadRaisingForEdit", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return null;
+            }
+        }
+
+        public List<Person> LoadNoRaising()
+        {
+            string query = @"SELECT Personal.name, Personal.secondName, Personal.lastName 
+                           FROM Personal LEFT JOIN RaisingPersonal ON RaisingPersonal.idPerson = Personal.id 
+                           WHERE RaisingPersonal.idPerson IS NULL";
+            try
+            {
+                OpenConnect();
+                SqlCommand command = new SqlCommand(query, sqlConnection);
+                SqlDataReader reader = command.ExecuteReader();
+                List<Person> person = new List<Person>();
+                while (reader.Read())
+                {
+                    Person p = new Person(reader[0].ToString().Trim(), reader[1].ToString().Trim(), reader[2].ToString().Trim());
+                    person.Add(p);
+                }
+                reader.Close();
+                CloseConnect();
+                return person;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString(), "Ошибка LoadRaisingForEdit", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return null;
+            }
+
+
+        }
+
+        public void AddDivision(string division)
+        {
+            string query = $"INSERT INTO Divisions(division) VALUES ('{division}')";
+            try
+            {
+                OpenConnect();
+                SqlCommand command = new SqlCommand(query, sqlConnection);
+                command.ExecuteNonQuery();
+            }
+            catch (System.Exception ex)
+            {
+                MessageBox.Show(ex.ToString(), "AddDivision", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                if (sqlConnection.State == ConnectionState.Open)
+                {
+                    CloseConnect();
+                }
+            }
+        }
+        public void AddEducation(string education)
+        {
+            string query = $"INSERT INTO Education(educateName) VALUES ('{education}')";
+            try
+            {
+                OpenConnect();
+                SqlCommand command = new SqlCommand(query, sqlConnection);
+                command.ExecuteNonQuery();
+            }
+            catch (System.Exception ex)
+            {
+                MessageBox.Show(ex.ToString(), "AddDivision", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                if (sqlConnection.State == ConnectionState.Open)
+                {
+                    CloseConnect();
+                }
+            }
+        }
+        public void AddReising(Person person)
+        {
+            string query = $@"INSERT INTO RaisingPersonal (idPerson, persent)
+                                SELECT p.id, {person.reisingPersent}
+                                FROM Personal p
+                                WHERE p.name = '{person.name}'
+                                AND p.secondName = '{person.secondName}'
+                                AND p.lastName = '{person.lastName}'";
+            try
+            {
+                OpenConnect();
+                SqlCommand command = new SqlCommand(query, sqlConnection);
+                command.ExecuteNonQuery();
+                MessageBox.Show(person.GetFullName() + " добавлен в список на повышение", "Успешно", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (System.Exception ex)
+            {
+                MessageBox.Show(ex.ToString(), "AddReising", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                if (sqlConnection.State == ConnectionState.Open)
+                {
+                    CloseConnect();
+                }
+            }
+        }
+
+        public void DeleteDivision(string division)
+        {
+            string query = $"DELETE FROM Divisions WHERE division = '{division}'";
+            try
+            {
+                OpenConnect();
+                SqlCommand command = new SqlCommand(query, sqlConnection);
+                command.ExecuteNonQuery();
+            }
+            catch (System.Exception ex)
+            {
+                MessageBox.Show(ex.ToString(), "AddDivision", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                if (sqlConnection.State == ConnectionState.Open) { CloseConnect(); }
+            }
+        }
+        public void DeleteEducation(string education)
+        {
+            string query = $"DELETE FROM Education WHERE educateName = '{education}'";
+            try
+            {
+                OpenConnect();
+                SqlCommand command = new SqlCommand(query, sqlConnection);
+                command.ExecuteNonQuery();
+            }
+            catch (System.Exception ex)
+            {
+                MessageBox.Show(ex.ToString(), "AddDivision", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                if (sqlConnection.State == ConnectionState.Open) { CloseConnect(); }
+            }
+        }
+        public void DeleteFromRaising(Person person)
+        {
+            string query = $@"DELETE FROM RaisingPersonal RIGHT JOIN Personal ON Personal.id = RaisingPersonal.idPerson  
+                              WHERE Personal.name = '{person.name}' AND Personal.secondName = '{person.secondName}' AND Personal.lastName = '{person.lastName}'";
+
+            string query2 = $@"DELETEFROM RaisingPersonal (idPerson, persent)
+                                SELECT p.id, {person.reisingPersent}
+                                FROM Personal p
+                                WHERE p.name = '{person.name}'
+                                AND p.secondName = '{person.secondName}'
+                                AND p.lastName = '{person.lastName}'";
+
+            string query3 = $@"DELETE R
+                                FROM RaisingPersonal R
+                                JOIN Personal P ON R.idPerson = P.id
+                                WHERE P.name = '{person.name}'
+                                AND P.secondName = '{person.secondName}'
+                                AND P.lastName = '{person.lastName}';";
+
+            try
+            {
+                OpenConnect();
+                SqlCommand command = new SqlCommand(query3, sqlConnection);
+                command.ExecuteNonQuery();
+                CloseConnect();
+                MessageBox.Show(person.GetFullName() + " удален из списка на повышение", "Успешно", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.ToString(), "Ошибка DeleteFromRaising", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
     }
 }

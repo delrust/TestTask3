@@ -35,16 +35,16 @@ namespace TestTask
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.redactionButton = new System.Windows.Forms.Button();
-            this.ExitButton = new System.Windows.Forms.Button();
-            this.ReportButton = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
             this.id = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.FullName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tabNumber = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Sex = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.birthDate = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.redactionButton = new System.Windows.Forms.Button();
+            this.ExitButton = new System.Windows.Forms.Button();
+            this.ReportButton = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
+            this.button1 = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
@@ -113,6 +113,47 @@ namespace TestTask
             this.dataGridView1.Size = new System.Drawing.Size(765, 386);
             this.dataGridView1.TabIndex = 0;
             // 
+            // id
+            // 
+            this.id.HeaderText = "Column1";
+            this.id.MinimumWidth = 6;
+            this.id.Name = "id";
+            this.id.ReadOnly = true;
+            this.id.Visible = false;
+            this.id.Width = 125;
+            // 
+            // FullName
+            // 
+            this.FullName.HeaderText = "ФИО";
+            this.FullName.MinimumWidth = 6;
+            this.FullName.Name = "FullName";
+            this.FullName.ReadOnly = true;
+            this.FullName.Width = 200;
+            // 
+            // tabNumber
+            // 
+            this.tabNumber.HeaderText = "Табельный номер";
+            this.tabNumber.MinimumWidth = 6;
+            this.tabNumber.Name = "tabNumber";
+            this.tabNumber.ReadOnly = true;
+            this.tabNumber.Width = 125;
+            // 
+            // Sex
+            // 
+            this.Sex.HeaderText = "Пол";
+            this.Sex.MinimumWidth = 6;
+            this.Sex.Name = "Sex";
+            this.Sex.ReadOnly = true;
+            this.Sex.Width = 40;
+            // 
+            // birthDate
+            // 
+            this.birthDate.HeaderText = "Дата рождения";
+            this.birthDate.MinimumWidth = 6;
+            this.birthDate.Name = "birthDate";
+            this.birthDate.ReadOnly = true;
+            this.birthDate.Width = 125;
+            // 
             // redactionButton
             // 
             this.redactionButton.Location = new System.Drawing.Point(789, 59);
@@ -161,47 +202,7 @@ namespace TestTask
             this.button1.TabIndex = 8;
             this.button1.Text = "Дополнительно";
             this.button1.UseVisualStyleBackColor = true;
-            // 
-            // id
-            // 
-            this.id.HeaderText = "Column1";
-            this.id.MinimumWidth = 6;
-            this.id.Name = "id";
-            this.id.ReadOnly = true;
-            this.id.Visible = false;
-            this.id.Width = 125;
-            // 
-            // FullName
-            // 
-            this.FullName.HeaderText = "ФИО";
-            this.FullName.MinimumWidth = 6;
-            this.FullName.Name = "FullName";
-            this.FullName.ReadOnly = true;
-            this.FullName.Width = 200;
-            // 
-            // tabNumber
-            // 
-            this.tabNumber.HeaderText = "Табельный номер";
-            this.tabNumber.MinimumWidth = 6;
-            this.tabNumber.Name = "tabNumber";
-            this.tabNumber.ReadOnly = true;
-            this.tabNumber.Width = 125;
-            // 
-            // Sex
-            // 
-            this.Sex.HeaderText = "Пол";
-            this.Sex.MinimumWidth = 6;
-            this.Sex.Name = "Sex";
-            this.Sex.ReadOnly = true;
-            this.Sex.Width = 40;
-            // 
-            // birthDate
-            // 
-            this.birthDate.HeaderText = "Дата рождения";
-            this.birthDate.MinimumWidth = 6;
-            this.birthDate.Name = "birthDate";
-            this.birthDate.ReadOnly = true;
-            this.birthDate.Width = 125;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // MainForm
             // 

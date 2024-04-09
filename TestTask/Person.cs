@@ -20,9 +20,23 @@ namespace TestTask
         public DateTime contractDate;
         public DateTime exContractDate;
 
+        public int reisingPersent;
         private static int AddCount = -1;
 
         public Person() { }
+        public Person(string name, string secondName, string lastName)
+        {
+            this.name = name;
+            this.secondName = secondName;
+            this.lastName = lastName;
+        }
+        public Person(string name, string secondName, string lastName, int reisingPersent)
+        {
+            this.name = name;
+            this.secondName = secondName;
+            this.lastName = lastName;
+            this.reisingPersent = reisingPersent;
+        }
         public Person(string name, string secondName, string lastName, string tableNum, string sex, DateTime birthday, string division, string education)
         {
             this.name = name;
@@ -41,6 +55,24 @@ namespace TestTask
         public Person(string name, string secondName, string lastName, string tableNum, string sex, DateTime birthday, string division, string education, DateTime contractDate, DateTime exContractDate) : this(name, secondName, lastName, tableNum, sex, birthday, division, education, contractDate)
         {
             this.exContractDate = exContractDate;
+        }
+
+        public Person(string fullName)
+        {
+            string[] str;
+            str = fullName.Split(' ');
+            name = str[0];
+            secondName = str[1];
+            lastName = str[2];
+        }
+        public Person(string fullName, int reisingPersent)
+        {
+            string[] str;
+            str = fullName.Split(' ');
+            name = str[0];
+            secondName = str[1];
+            lastName = str[2];
+            this.reisingPersent = reisingPersent;
         }
 
         public void AddInfo(string info)
@@ -67,5 +99,11 @@ namespace TestTask
             return name + " " + secondName + " " + lastName + "\n" + tableNum + "\n" + sex + "\n" + birthday.ToString() + "\n" + division + "\n" + education +
                 "\n" + contractDate.ToString() + " - " + exContractDate.ToString();
         }
+        public string GetFullName()
+        {
+            return name + " " + secondName + " " + lastName;
+        }
+
+       
     }
 }

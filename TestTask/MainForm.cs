@@ -19,6 +19,16 @@ namespace TestTask
         {
             InitializeComponent();
 
+            if (dm.sqlConnection.DataSource != null)
+            {
+                label1.Text = "Сервер подключен";
+                label1.ForeColor = Color.Green;
+            }
+            else
+            {
+                label1.Text = "Сервер не подключен";
+                label1.ForeColor = Color.Red;
+            }
             dm.CreatePersonalTable();
             dm.CreateEducationTable();
             dm.CreateDivisionTable();
@@ -30,7 +40,7 @@ namespace TestTask
         private void AddingButton_Click(object sender, EventArgs e)
         {
             AddingForm addingForm = new AddingForm();
-            addingForm.Show();
+            addingForm.ShowDialog();
         }
         private void Form1_Activated(object sender, EventArgs e)
         {
@@ -56,7 +66,7 @@ namespace TestTask
         {
             int id = Int32.Parse(dataGridView1[0, dataGridView1.CurrentCell.RowIndex].Value.ToString());
             AddingForm addingForm = new AddingForm(id);
-            addingForm.Show();
+            addingForm.ShowDialog();
         }
         private void ExitButton_Click(object sender, EventArgs e) { Close(); }
         private void ReportButton_Click(object sender, EventArgs e)
@@ -92,6 +102,12 @@ namespace TestTask
                 else
                     dataGridView1.Rows[i].Visible = true;
             }
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            OtherForm otherForm = new OtherForm();
+            otherForm.ShowDialog();
         }
     }
 }
